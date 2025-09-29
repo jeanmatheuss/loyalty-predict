@@ -12,8 +12,7 @@ Construindo uma solução de Data Science junto com a comunidade! Confira todo n
 - [Pré Requisitos](#pré-requisitos)
 - [Etapas](#etapas)
 - [Fonte de Dados](#fontes-de-dados)
-- [Como nos apoiar](#apoie-o-nosso-trabalho)
-- [Perguntas Frequentes](#perguntas-frequentes)
+
 
 
 ## Objetivo
