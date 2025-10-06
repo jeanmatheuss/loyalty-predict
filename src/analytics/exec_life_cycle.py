@@ -2,6 +2,8 @@
 
 import pandas as pd
 import sqlalchemy
+import datetime
+
 # %%
 
 def import_query(path):
@@ -18,34 +20,31 @@ engine_app = sqlalchemy.create_engine("sqlite:///../../data/loyalty-system/datab
 
 engine_analytical = sqlalchemy.create_engine("sqlite:///../../data/analytics/database.db")
 
-df = pd.read_sql(query, engine_app)
-df.to_sql("life_cycle", engine_analytical, index=False, if_exists="append")
 # %%
 
-date = [
-    '2024-08-01',
-    '2024-09-01',
-    '2024-10-01',
-    '2024-11-01',
-    '2024-12-01',    
-    '2025-01-01',
-    '2025-02-01',
-    '2025-03-01',
-    '2025-04-01',
-    '2025-05-01',
-    '2025-06-01',
-    '2025-07-01',
-    '2025-08-01',
-    '2025-09-29',
-]
+def date_range(start, stop):
+    dates = []
+    while start <= stop:
+        dates.append(start)
+        dt_start = datetime.datetime.strptime(start, "%Y-%m-%d") + datetime.timedelta(days=1)
+        start = datetime.datetime.strftime(dt_start, "%Y-%m-%d")
+    return dates
+dates = date_range('2025-09-01', '2025-10-01')
 
-for i in date:
+
+for i in dates:
 
     with engine_analytical.connect() as con:
-        con.execute(sqlalchemy.text(f"DELETE FROM life_cycle WHERE dtRef = date('{i}', '-1 day')"))
-        con.commit()
+        try:
+            query_delete = f"DELETE FROM life_cycle WHERE dtRef = date('{i}', '-1 day')"
+            con.execute(sqlalchemy.text(query_delete))
+            con.commit()
+        except Exception as err:
+            print(err)
 
-    print(i)
+    # print(i)
     query_format = query.format(date=i)
     df = pd.read_sql(query_format, engine_app)
     df.to_sql("life_cycle", engine_analytical, index=False, if_exists="append")
+
+# %%

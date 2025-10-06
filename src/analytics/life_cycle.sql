@@ -8,9 +8,10 @@
 
 WITH tb_daily as (
 
-    SELECT DISTINCT
-            IdCliente,
-            substr(DtCriacao,0,11) as DtDia
+    SELECT 
+        DISTINCT
+        IdCliente,
+        substr(DtCriacao,0,11) as DtDia
     FROM transacoes
     WHERE DtCriacao < '{date}'
 ),
@@ -57,11 +58,48 @@ tb_life_cycle AS (
 
     LEFT JOIN tb_penultimo_dia as t2
     ON t1.IdCliente = t2.IdCliente
+),
+tb_freq_valor as (
+
+    SELECT IdCliente,
+            count(DISTINCT substr(DtCriacao,0,11)) AS qtdeFrequencia,
+            sum(CASE WHEN QtdePontos > 0 THEN QtdePontos ELSE 0 END) AS qtdePontosPos,
+            sum(abs(QtdePontos)) AS qtdePontosAbs
+
+    FROM transacoes
+
+    WHERE DtCriacao < '{date}'
+    AND DtCriacao > date('{date}','-28 day')
+
+    GROUP BY 1
+    ORDER BY qtdeFrequencia DESC
+),
+
+tb_cluster as (
+    SELECT *,
+        CASE 
+            WHEN qtdeFrequencia <= 10 AND qtdePontosPos >= 1500 THEN '12-HYPER'
+            WHEN qtdeFrequencia > 10 AND qtdePontosPos >= 1500 THEN '22-EFICIENTE'
+            WHEN qtdeFrequencia <= 10 AND qtdePontosPos >= 750 THEN '10-INDECISO'
+            WHEN qtdeFrequencia > 10 AND qtdePontosPos >= 750 THEN '21-ESFORÇADO'
+            WHEN qtdeFrequencia < 5 THEN '00-LUKER'
+            WHEN qtdeFrequencia <= 10 THEN '01-PREGUIÇOSO'
+            WHEN qtdeFrequencia > 10 THEN '20-POTENCIAL'
+        END AS cluster
+
+    FROM tb_freq_valor
 )
 
 SELECT 
     date('{date}', '-1 day') as dtRef,
-    *
-FROM tb_life_cycle
+    t1.*,
+    t2.qtdeFrequencia,
+    t2.qtdePontosPos,
+    t2.cluster
+
+FROM tb_life_cycle as t1
+
+LEFT JOIN tb_cluster as t2
+ON t1.IdCliente = t2.IdCliente
 
 
