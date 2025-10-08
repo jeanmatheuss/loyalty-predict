@@ -100,7 +100,7 @@ tb_atividade as (
 tb_ultima_atividade as (
 
     SELECT idUsuario,
-        min(julianday('2025-10-01') - julianday(dtCriacao)) AS qtdDiasUltiAtividade
+        min(julianday('{date}') - julianday(dtCriacao)) AS qtdDiasUltiAtividade
 
     FROM tb_atividade
     GROUP BY idUsuario
@@ -145,6 +145,6 @@ tb_join as (
     ON t1.idUsuario = t3.idUsuario
 )
 
-SELECT date('2025-10-01', '-1 day') AS dtRef,
+SELECT date('{date}', '-1 day') AS dtRef,
         *
 FROM tb_join
