@@ -53,7 +53,7 @@ def exec_query(table, db_origin, db_target,dt_start, dt_stop):
 
 def main():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--db_origin", choices= ['loyalty-system', 'education-plataform', 'analytics'],
+    parser.add_argument("--db_origin", choices= ['loyalty-system', 'education-platform', 'analytics'],
                         default = 'loyalty-system')
     parser.add_argument("--db_target", choices= ['analytics'], default='analytics')
     parser.add_argument("--table", type=str,help="Tabela que será processada com o mesmo nome do arquivo")
