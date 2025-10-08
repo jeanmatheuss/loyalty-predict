@@ -143,5 +143,3 @@ AND t1.dtRef = t3.dtRef
 LEFT JOIN fs_education AS t4
 ON t1.IdCliente = t4.IdCliente
 AND t1.dtRef = t4.dtRef
-
-LIMIT 10
