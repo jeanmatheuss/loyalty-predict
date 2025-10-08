@@ -5,7 +5,7 @@ WITH tb_usuario_cursos AS (
         count(descSlugCursoEpisodio) as qtdeEps
 
     FROM cursos_episodios_completos
-    WHERE dtCriacao < '2025-09-01'
+    WHERE dtCriacao < '{date}'
     GROUP BY idUsuario, descSlugCurso
 ),
 tb_cursos_total_eps as (
@@ -28,7 +28,7 @@ tb_pct_cursos as (
     LEFT JOIN tb_cursos_total_eps as t2
     ON t1.descSlugCurso = t2.descSlugCurso
 
-    GROUP BY t1.idUsuario
+
 ),
 tb_pct_cursos_pivot as (
 
@@ -73,7 +73,7 @@ tb_atividade as (
         max(dtRecompensa) as dtCriacao
 
     FROM recompensas_usuarios
-    WHERE dtRecompensa < '2025-09-01'
+    WHERE dtRecompensa < '{date}'
     GROUP BY idUsuario
 
     UNION ALL
@@ -83,7 +83,7 @@ tb_atividade as (
         max(dtCriacao) as dtCriacao
 
     FROM habilidades_usuarios
-    WHERE dtCriacao < '2025-09-01'
+    WHERE dtCriacao < '{date}'
     GROUP BY idUsuario
 
     UNION ALL
@@ -93,7 +93,7 @@ tb_atividade as (
         max(dtCriacao) as dtCriacao
 
     FROM cursos_episodios_completos
-    WHERE dtCriacao < '2025-09-01'
+    WHERE dtCriacao < '{date}'
     GROUP BY idUsuario
 ),
 
