@@ -1,6 +1,6 @@
 CREATE TABLE abt_fiel AS
 
-    WITH tb_join AS (
+WITH tb_join AS (
 
     SELECT 
         t1.dtRef,
