@@ -1,1 +1,0 @@
-SELECT * FROM abt_fiel
