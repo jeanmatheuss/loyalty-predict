@@ -2,3 +2,5 @@ estudos.ipynb
 teste.sql
 *.csv
 *.db
+/mlartifacts
+/mlruns
