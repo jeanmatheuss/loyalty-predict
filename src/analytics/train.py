@@ -4,19 +4,25 @@ import pandas as pd
 import sqlalchemy
 import matplotlib.pyplot as plt
 
+import mlflow
+
 from sklearn import model_selection
+from sklearn import tree
+from sklearn import ensemble
+from sklearn import pipeline
+from sklearn import metrics
 
 from feature_engine import selection
 from feature_engine import imputation
 from feature_engine import encoding
 
-import mlflow
 
 mlflow.set_tracking_uri("http://localhost:5000")
 mlflow.set_experiment(experiment_id=481979373587284901)
 
 con = sqlalchemy.create_engine("sqlite:///../../data/analytics/database.db")
 # %%
+
 
 # SAMPLE - IMPORT DOS DADOS
 
@@ -135,8 +141,6 @@ onehot = encoding.OneHotEncoder(variables=cat_features)
 
 # MODELs
 
-from sklearn import tree
-from sklearn import ensemble
 
 # model = tree.DecisionTreeClassifier(random_state=42, min_samples_leaf=50)
 # model = ensemble.AdaBoostClassifier(random_state=42,
@@ -165,7 +169,7 @@ grid = model_selection.GridSearchCV(model,
 
 # Criando Pipeline
 
-from sklearn import pipeline
+
 
 with mlflow.start_run() as rn:
     mlflow.sklearn.autolog()
@@ -186,7 +190,7 @@ with mlflow.start_run() as rn:
 
 # ASSESS - Métricas
 
-    from sklearn import metrics
+    
 
     y_pred_train = model_pipeline.predict(X_train)
     y_prob_train = model_pipeline.predict_proba(X_train)
@@ -265,9 +269,10 @@ model_series.to_pickle("model_fiel.pkl")
 # %%
 
 # verificar features importantes pro modelo
-features_names = (model_pipeline[:-1].transform(X_train.head(-1)).columns.tolist())
+features_names = (model_pipeline[:-1].transform(X_train.head(1)).columns.tolist())
 feature_importance = pd.Series(model_pipeline[:-1].feature_importances_, index=features_names)
 feature_importance.sort_values(ascending=False)
 
 
 # testar para outros modelos de ML
+# %%

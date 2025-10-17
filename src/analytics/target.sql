@@ -1,4 +1,5 @@
-CREATE TABLE abt_fiel AS
+DROP TABLE IF EXISTS abt_fiel;
+CREATE TABLE IF NOT EXISTS abt_fiel AS
 
 WITH tb_join AS (
 
@@ -83,8 +84,8 @@ WITH tb_join AS (
         t2.qtdeAirflowLover,
         t2.qtdeRLover,
         t2.qtdeResgatarPonei,
-        t2.qtdeListadepresenÃ§a,
-        t2.qtdePresenÃ§aStreak,
+        t2.qtdeListadepresenca,
+        t2.qtdePresencaStreak,
         t2.qtdeTrocadePontosStreamElements,
         t2.qtdeReembolsoTrocadePontosStreamElements,
         t2.qtdeRpg,

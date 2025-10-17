@@ -28,13 +28,13 @@ def date_range(start, stop, monthly=False):
     return dates
 
 
-def exec_query(table, db_origin, db_target,dt_start, dt_stop):
+def exec_query(table, db_origin, db_target,dt_start, dt_stop, monthly):
 
     engine_app = sqlalchemy.create_engine(f"sqlite:///../../data/{db_origin}/database.db")
     engine_analytical = sqlalchemy.create_engine(f"sqlite:///../../data/{db_target}/database.db")
 
     query = import_query(f"{table}.sql")
-    dates = date_range(dt_start, dt_stop)
+    dates = date_range(dt_start, dt_stop, monthly)
 
     for i in tqdm(dates):
 
@@ -65,7 +65,7 @@ def main():
     parser.add_argument("--monthly", action='store_true')
     args = parser.parse_args()
 
-    exec_query(args.table, args.db_origin, args.db_target, args.start, args.stop)
+    exec_query(args.table, args.db_origin, args.db_target, args.start, args.stop, args.monthly)
 
 if __name__ == "__main__":
     main()

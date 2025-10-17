@@ -4,3 +4,6 @@ teste.sql
 *.db
 /mlartifacts
 /mlruns
+kaggle.json
+.env
+__pycache__
