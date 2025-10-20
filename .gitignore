@@ -6,4 +6,5 @@ teste.sql
 /mlruns
 kaggle.json
 .env
+.venv
 __pycache__
