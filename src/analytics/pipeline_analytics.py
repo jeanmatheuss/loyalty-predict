@@ -2,62 +2,23 @@
 from exec_query import exec_query
 
 import datetime
+import json
+
+# Leitura do arquivo config, para alteração mudar diretamente o arquivo confi.json
+
+with open("config.json", "r") as fp:
+    steps = json.load(fp)
 
 now = datetime.datetime.now().strftime("%Y-%m-%d")
 start = '2025-01-01'
 stop = '2025-10-01'
-steps = [
-    {
-        "table":"life_cycle",
-        "db_origin":"loyalty-system",
-        "db_target":"analytics",
-        "dt_start":now,
-        "dt_stop":now,
-        "monthly":False,
-        'mode':'append'
-    },
-    {
-        "table":"fs_transacional",
-        "db_origin":"loyalty-system",
-        "db_target":"analytics",
-        "dt_start":now,
-        "dt_stop":now,
-        "monthly":False,
-        'mode':'append'
-    },
-    {
-        "table":"fs_education",
-        "db_origin":"education-platform",
-        "db_target":"analytics",
-        "dt_start":now,
-        "dt_stop":now,
-        "monthly":False,
-        'mode':'append'
-    },
-    {
-        "table":"fs_life_cycle",
-        "db_origin":"analytics",
-        "db_target":"analytics",
-        "dt_start":now,
-        "dt_stop":now,
-        "monthly":False,
-        'mode':'append'
 
-    },
-    {
-        "table":"fs_all",
-        "db_origin":"analytics",
-        "db_target":"analytics",
-        "dt_start":now,
-        "dt_stop":now,
-        "monthly":False,
-        'mode':'replace'
-
-    },
-]
+for s in steps:
+    if s["dt_start"] == "now":
+        s["dt_start"] = now
+    if s["dt_stop"] == "now":
+        s["dt_stop"] = now
 
 for i in steps:
     exec_query(**i)
 # %%
-
-# rodar esse script pra atualizar os dados
