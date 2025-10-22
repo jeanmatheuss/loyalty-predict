@@ -26,7 +26,9 @@ data = pd.read_sql("SELECT * FROM abt_fiel", con)
 
 predict = model.predict_proba(data[model.feature_names_in_])[:,1]
 
-data['predict'] = predict
+data['predictFiel'] = predict
 
-data
+data = data[['dtRef', 'IdCliente', 'predictFiel']]
+
+data.to_sql("score_fiel", con, index=False, if_exists="replace")
 # %%

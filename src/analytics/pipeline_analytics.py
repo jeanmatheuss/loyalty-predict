@@ -21,4 +21,3 @@ for s in steps:
 
 for i in steps:
     exec_query(**i)
-# %%
